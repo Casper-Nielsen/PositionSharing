@@ -26,7 +26,7 @@ namespace PositionSharing
 
         private void Button_Clicked_1(object sender, EventArgs e)
         {
-            View.Content = null;
+            View.Content = new view.GroupView();
         }
     }
 }
