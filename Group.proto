@@ -1,0 +1,9 @@
+syntax = "proto3";
+package CommunicationModels.Models;
+
+message Group {
+    string title = 1;
+    string groupKey = 2;
+    string userGroupKey = 3;
+    string user = 4;
+}   

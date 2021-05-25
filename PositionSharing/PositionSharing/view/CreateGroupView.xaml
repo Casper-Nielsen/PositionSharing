@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ContentView xmlns="http://xamarin.com/schemas/2014/forms" 
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="PositionSharing.view.CreateGroupView">
+  <ContentView.Content>
+      <StackLayout>
+          <Label Text="Create a Group" />
+            <Entry x:Name="GroupName" Text="Group Name" />
+            <Entry x:Name="Username" Text="Username" />
+            <Button 
+                Text="Create"
+                    Clicked="Button_Clicked"/>
+        </StackLayout>
+  </ContentView.Content>
+</ContentView>

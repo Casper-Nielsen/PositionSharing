@@ -1,0 +1,21 @@
+syntax = "proto3";
+package CommunicationModels.Models;
+
+import "google/protobuf/timestamp.proto";
+
+message OuterMessage {
+    enum MessageType {
+        ERROR = 0;
+        RESPONSE = 1;
+        REQUEST = 2;
+        PULSE = 3;
+    }
+    enum RequestType {
+        NONE = 0;
+        CREATEGROUP = 1;
+    }
+    MessageType mType = 1;
+    RequestType rType = 2;
+    google.protobuf.Timestamp stamp = 3;
+    bytes message = 4;
+}
