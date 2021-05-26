@@ -30,14 +30,25 @@ namespace PositionSharing.Action
         /// creates a group
         /// </summary>
         /// <param name="title">the title of the group</param>
-        public async Task CreateGroupAsync(string title)
+        public async Task<Group> CreateGroupAsync(string title)
         {
             await Task.Delay(1);
             Group group = communicationManager.CreateGroup(title,username);
             if (group.GroupKey.Length > 1)
             {
                 storageManager.SaveGroup(group);
+                return group;
             }
+            return null;
+        }
+
+        /// <summary>
+        /// gets groups from the storages
+        /// </summary>
+        /// <returns>a list of groups</returns>
+        public List<Group> GetLocalGroups()
+        {
+            return storageManager.GetGroups();
         }
     }
 }

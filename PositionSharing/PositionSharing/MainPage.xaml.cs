@@ -12,7 +12,7 @@ namespace PositionSharing
 {
     public partial class MainPage : ContentPage
     {
-        private Action.ActionHandler handler;
+        private ActionHandler handler;
         public MainPage()
         {
             InitializeComponent();
@@ -21,12 +21,12 @@ namespace PositionSharing
 
         private void Button_Clicked(object sender, EventArgs e)
         {
-            View.Content = new view.CreateGroupView(ref handler);
+            View.Content = null;
         }
 
         private void Button_Clicked_1(object sender, EventArgs e)
         {
-            View.Content = new view.GroupView();
+            View.Content = new view.GroupView(ref handler);
         }
     }
 }

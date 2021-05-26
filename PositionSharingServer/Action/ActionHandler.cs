@@ -24,6 +24,7 @@ namespace PositionSharingServer.Action
         /// <returns></returns>
         public void CreateGroup(ref IClientSocket client, CommunicationModels.Models.Group group)
         {
+            Console.WriteLine("Create Group Started");
             bool reRun = false;
 
             // Creates a key for that group
@@ -51,6 +52,7 @@ namespace PositionSharingServer.Action
                     group1.UserGroupKey),
                 MessageType.RESPONSE,
                 RequestType.CREATEGROUP);
+            Console.WriteLine("Create Group completed");
         }
     }
 }

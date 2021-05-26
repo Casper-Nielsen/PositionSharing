@@ -35,3 +35,8 @@ CREATE PROCEDURE SPAddUserToGroup @GroupKey NVARCHAR(255), @UserGroupKey NVARCHA
 AS
 	INSERT INTO UserTable (GroupKey, UserGroupKey) VALUES (@GroupKey, @UserGroupKey)
 GO
+
+USE PositionSharing;
+GRANT EXECUTE ON dbo.SPInsertGroup TO SecureExecuter;
+GRANT EXECUTE ON dbo.SPContainsGroup TO SecureExecuter;
+GRANT EXECUTE ON dbo.SPAddUserToGroup TO SecureExecuter;

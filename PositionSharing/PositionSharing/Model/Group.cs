@@ -29,6 +29,12 @@ namespace PositionSharing.Model
         public Group(string groupKey) {
             GroupKey = groupKey;
         }
+        public Group(Storage.Database.Group group)
+        {
+            GroupKey = group.GroupKey;
+            Title = group.Title;
+            UserGroupKey = group.UserGroupKey;
+        }
         public Group(string title, string groupKey) : this(groupKey)
         {
             Title = title;

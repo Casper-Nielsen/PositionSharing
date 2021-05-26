@@ -10,5 +10,6 @@ namespace PositionSharing.Storage
         void SaveGroup(Group group);
         bool ContainsGroup(Group group);
         void DeleteGroup(Group group);
+        List<Group> GetGroups();
     }
 }

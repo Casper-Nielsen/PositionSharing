@@ -78,6 +78,7 @@ namespace PositionSharingServer.Communication
         /// <param name="requestType">the request type</param>
         public void Send(IMessage message, MessageType messageType, RequestType requestType)
         {
+            Console.WriteLine(message.ToString());
             lock (socket_Lock)
             {
                 if (socket.Connected)

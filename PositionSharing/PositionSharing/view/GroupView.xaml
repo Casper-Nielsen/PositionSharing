@@ -2,9 +2,87 @@
 <ContentView xmlns="http://xamarin.com/schemas/2014/forms" 
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="PositionSharing.view.GroupView">
-  <ContentView.Content>
-      <StackLayout>
-          <Label Text="Hello Xamarin.Forms!" />
-      </StackLayout>
-  </ContentView.Content>
+    <ContentView.Resources>
+        <Style TargetType="Grid">
+            <Setter Property="RowSpacing" Value="0"/>
+        </Style>
+    </ContentView.Resources>
+    <ContentView.Content>
+        <Grid>
+            <Grid.RowDefinitions>
+                
+                <RowDefinition Height="0.4*" />
+                <RowDefinition Height="1*" />
+                <RowDefinition Height="0.4*" />
+            </Grid.RowDefinitions>
+        <Grid 
+            Grid.Row="0" Grid.RowSpan="3">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="1*" />
+                <ColumnDefinition Width="1*" />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="0.09*"/>
+                <RowDefinition Height="1*" />
+            </Grid.RowDefinitions>
+
+            <Button 
+                Grid.Row="0" 
+                Grid.Column="0" 
+                x:Name="Joinbtn"
+                Text="Join Group" Clicked="Joinbtn_Clicked"/>
+            <Button
+                Grid.Row="0"
+                Grid.Column="1"
+                x:Name="Createbtn"
+                Text="Create Group" Clicked="Createbtn_Clicked"
+                />
+
+            <ListView 
+                Grid.Row="1" 
+                Grid.Column="0" Grid.ColumnSpan="2"
+                x:Name="GroupsView"
+                ItemSelected="GroupsView_ItemSelected"
+                SeparatorColor="#409f">
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <ViewCell>
+                                <Grid>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="1*" />
+                                        <RowDefinition Height="0.5*" />
+                                    </Grid.RowDefinitions>
+                                    <Label Grid.Row="0" FontSize="Medium" Text="{Binding Title}" />
+                                    <Label Grid.Row="1" FontSize="Micro" Text="{Binding GroupKey}" />
+                                </Grid>
+                            </ViewCell>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+            </Grid>
+
+            <Button 
+                Grid.Row="0"
+                x:Name="OpenAreaTopbtn"
+                BackgroundColor="Transparent"
+                IsVisible="false"
+                Clicked="openArea_Clicked"
+                    />
+            <Frame 
+                CornerRadius="20"
+                Margin="10"
+                Grid.Row="1"
+                x:Name="Popup"
+                BackgroundColor="#d333"
+                BorderColor="#509f"
+                IsVisible="false"/>
+            <Button 
+                Grid.Row="2"
+                x:Name="OpenAreaBottombtn"
+                BackgroundColor="Transparent"
+                IsVisible="false"
+                Clicked="openArea_Clicked"
+                    />
+        </Grid>
+    </ContentView.Content>
 </ContentView>
