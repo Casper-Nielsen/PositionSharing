@@ -13,6 +13,7 @@ message OuterMessage {
     enum RequestType {
         NONE = 0;
         CREATEGROUP = 1;
+        LEAVEGROUP = 2;
     }
     MessageType mType = 1;
     RequestType rType = 2;

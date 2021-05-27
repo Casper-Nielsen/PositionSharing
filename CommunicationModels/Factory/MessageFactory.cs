@@ -1,4 +1,4 @@
-﻿using CommunicationModels.Enum;
+﻿using static CommunicationModels.Models.OuterMessage.Types;
 using CommunicationModels.Models;
 using Google.Protobuf;
 

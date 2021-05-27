@@ -88,5 +88,23 @@ namespace PositionSharingServer.Storage
                 }
             }
         }
+
+        public void DeleteUser(string groupKey, string userKey)
+        {
+            using (SqlConnection con = new SqlConnection(this.con))
+            {
+                using (SqlCommand cmd = new SqlCommand("SPDeleteUser", con))
+                {
+                    cmd.CommandType = CommandType.StoredProcedure;
+
+                    cmd.Parameters.Add("@GroupKey", SqlDbType.NVarChar).Value = groupKey;
+                    cmd.Parameters.Add("@UserGroupKey", SqlDbType.NVarChar).Value = userKey;
+
+                    con.Open();
+                    cmd.ExecuteNonQuery();
+                    cmd.Dispose();
+                }
+            }
+        }
     }
 }

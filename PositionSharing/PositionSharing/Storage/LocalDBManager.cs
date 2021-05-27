@@ -19,9 +19,13 @@ namespace PositionSharing.Storage
             throw new NotImplementedException();
         }
 
+        /// <summary>
+        /// Deletes the group
+        /// </summary>
+        /// <param name="group">The group to delete</param>
         public void DeleteGroup(Group group)
         {
-            throw new NotImplementedException();
+            database.DeleteGroupAsync(new Database.Group(group)).Wait();
         }
 
         /// <summary>

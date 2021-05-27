@@ -1,4 +1,4 @@
-﻿using CommunicationModels.Enum;
+﻿using static CommunicationModels.Models.OuterMessage.Types;
 using CommunicationModels.Factory;
 using CommunicationModels.Models;
 using Google.Protobuf;
@@ -40,23 +40,27 @@ namespace PositionSharingServer.Communication
                 {
                     lenght = socket.Receive(buffer, buffer.Length, SocketFlags.None);
                     OuterMessage outerMessage = OuterMessage.Parser.ParseFrom(Format(buffer,lenght));
+                    Console.WriteLine("Got data");
                     switch (outerMessage.MType)
                     {
-                        case OuterMessage.Types.MessageType.Error:
+                        case MessageType.Error:
                             errors++;
                             break;
-                        case OuterMessage.Types.MessageType.Response:
+                        case MessageType.Response:
                             break;
-                        case OuterMessage.Types.MessageType.Request:
+                        case MessageType.Request:
                             switch (outerMessage.RType)
                             {
-                                case OuterMessage.Types.RequestType.Creategroup:
+                                case RequestType.Creategroup:
 
                                     _ = Task.Run(new System.Action(() => handler.CreateGroup(ref itself, CommunicationModels.Models.Group.Parser.ParseFrom(outerMessage.Message))));
                                     break;
+                                case RequestType.Leavegroup:
+                                    _ = Task.Run(new System.Action(() => handler.RemoveUserFromGroup(ref itself, CommunicationModels.Models.Group.Parser.ParseFrom(outerMessage.Message))));
+                                    break;
                             }
                             break;
-                        case OuterMessage.Types.MessageType.Pulse:
+                        case MessageType.Pulse:
                             errors = 0;
                             break;
                         default:

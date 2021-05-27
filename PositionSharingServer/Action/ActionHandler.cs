@@ -1,11 +1,8 @@
 ﻿using PositionSharingServer.Communication;
 using PositionSharingServer.Group;
 using PositionSharingServer.Storage;
-using CommunicationModels.Enum;
+using static CommunicationModels.Models.OuterMessage.Types;
 using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace PositionSharingServer.Action
 {
@@ -39,8 +36,9 @@ namespace PositionSharingServer.Action
 
             // Saves the group
             storageManager.CreateGroup(group1.Title, group1.GroupKey);
-            
-            group1.GenerateUserKey(group.User);
+
+            group1 = GroupFactory.CompileUserKey(group1, group.User);
+
             // Addes the user to the group
             storageManager.AddToGroup(group1.GroupKey, group1.UserGroupKey);
 
@@ -50,9 +48,22 @@ namespace PositionSharingServer.Action
                     group1.Title, 
                     group1.GroupKey, 
                     group1.UserGroupKey),
-                MessageType.RESPONSE,
-                RequestType.CREATEGROUP);
+                MessageType.Response,
+                RequestType.Creategroup);
             Console.WriteLine("Create Group completed");
+        }
+    
+        public void RemoveUserFromGroup(ref IClientSocket client, CommunicationModels.Models.Group group)
+        {
+            Group.Group group1 = GroupFactory.Create(group.Title, group.GroupKey, group.UserGroupKey);
+            storageManager.DeleteUser(group1.GroupKey, group1.UserGroupKey);
+            client.Send(
+                CommunicationModels.Factory.GroupFactory.Create(
+                    group1.Title,
+                    group1.GroupKey,
+                    group1.UserGroupKey),
+                MessageType.Response,
+                RequestType.Leavegroup);
         }
     }
 }

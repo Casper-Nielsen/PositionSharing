@@ -9,5 +9,6 @@ namespace PositionSharingServer.Storage
         public bool ContainsKey(string key);
         public void CreateGroup(string groupName, string groupKey);
         public void AddToGroup(string groupKey, string user);
+        public void DeleteUser(string groupKey, string userKey);
     }
 }

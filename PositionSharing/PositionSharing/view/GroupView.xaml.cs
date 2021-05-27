@@ -42,7 +42,8 @@ namespace PositionSharing.view
         private void GroupsView_ItemSelected(object sender, SelectedItemChangedEventArgs e)
         {
             Group group = (Group)e.SelectedItem;
-            ChangePopup(true, new GroupSettingsView(ref handler, ref this.context, group));
+            if(group != null)
+                ChangePopup(true, new GroupSettingsView(ref handler, ref this.context, group));
         }
 
         /// <summary>
@@ -50,6 +51,7 @@ namespace PositionSharing.view
         /// </summary>
         private void Joinbtn_Clicked(object sender, EventArgs e)
         {
+            handler.StartGettingJoinableGroups();
             ChangePopup(false, null);
         }
 
@@ -77,15 +79,6 @@ namespace PositionSharing.view
         {
             Device.BeginInvokeOnMainThread(() =>
             {
-                if (isVisible)
-                {
-                    Popup.Opacity = 0;
-                    Popup.FadeTo(1);
-                }
-                else
-                {
-                    Task fade = Popup.FadeTo(0);
-                }
                 OpenAreaBottombtn.IsVisible = isVisible;
                 OpenAreaTopbtn.IsVisible = isVisible;
                 Popup.IsVisible = isVisible;
@@ -102,15 +95,32 @@ namespace PositionSharing.view
             ChangeVisiblePopup(isVisible);
             Device.BeginInvokeOnMainThread(() =>
             {
-                if (IsVisible)
+                if (isVisible)
                 {
                     Popup.Content = view;
                 }
                 else
                 {
                     Popup.Content = null;
+                    GroupsView.SelectedItem = null;
                 }
             });
+        }
+
+        /// <summary>
+        /// removes a group from the list
+        /// </summary>+
+        /// <param name="group">the group that will be removed</param>
+        public void RemoveGroup(Group group)
+        {
+            if (group != null)
+            {
+                Device.BeginInvokeOnMainThread(() =>
+                {
+                    groups.Remove(group);
+                });
+            }
+            ChangePopup(false, null);
         }
 
         /// <summary>

@@ -12,6 +12,7 @@ namespace PositionSharing.Action
     {
         private ICommunicationManager communicationManager;
         private IStorageManager storageManager;
+        private IBroadcaster broadcaster;
         private string username;
 
         public string Username
@@ -20,14 +21,15 @@ namespace PositionSharing.Action
             set { username = value; }
         }
 
-        public ActionHandler(ICommunicationManager communicationManager, IStorageManager storageManager)
+        public ActionHandler(ICommunicationManager communicationManager, IStorageManager storageManager, IBroadcaster broadcaster)
         {
             this.communicationManager = communicationManager;
             this.storageManager = storageManager;
+            this.broadcaster = broadcaster;
         }
 
         /// <summary>
-        /// creates a group
+        /// Creates a group
         /// </summary>
         /// <param name="title">the title of the group</param>
         public async Task<Group> CreateGroupAsync(string title)
@@ -43,12 +45,32 @@ namespace PositionSharing.Action
         }
 
         /// <summary>
-        /// gets groups from the storages
+        /// Gets groups from the storages
         /// </summary>
         /// <returns>a list of groups</returns>
         public List<Group> GetLocalGroups()
         {
             return storageManager.GetGroups();
+        }
+
+        /// <summary>
+        /// Leaves the group
+        /// </summary>
+        /// <param name="group">the group that the user will leave</param>
+        public async Task LeaveGroup(Group group)
+        {
+            Console.WriteLine("leaving group action ");
+            communicationManager.LeaveGroup(group);
+            storageManager.DeleteGroup(group);
+            await Task.Delay(1);
+        }
+
+        /// <summary>
+        /// gets all groups where a member is on the local network
+        /// </summary>
+        public void StartGettingJoinableGroups()
+        {
+            broadcaster.GetGroupsAsync();
         }
     }
 }

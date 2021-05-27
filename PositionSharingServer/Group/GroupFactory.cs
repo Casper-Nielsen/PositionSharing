@@ -24,5 +24,20 @@ namespace PositionSharingServer.Group
         {
             return new Group(name, key);
         }
+
+        public static Group Create(string name, string key, string userKey)
+        {
+            return new Group(name, key, userKey);
+        }
+        public static Group CompileUserKey(Group group, string user)
+        {
+
+            group.UserGroupKey = group.GroupKey + user;
+            return group;
+        }
+        public static string DeCompileUserKey(Group group)
+        {
+            return group.UserGroupKey.Remove(0,52);
+        }
     }
 }

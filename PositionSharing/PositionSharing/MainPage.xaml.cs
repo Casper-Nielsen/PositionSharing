@@ -16,7 +16,7 @@ namespace PositionSharing
         public MainPage()
         {
             InitializeComponent();
-            handler = new ActionHandler(new SocketCommunicationManager(), new LocalDBManager());
+            handler = new ActionHandler(new SocketCommunicationManager(), new LocalDBManager(), new Broadcaster());
         }
 
         private void Button_Clicked(object sender, EventArgs e)
