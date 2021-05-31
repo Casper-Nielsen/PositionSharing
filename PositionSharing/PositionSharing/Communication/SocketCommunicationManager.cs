@@ -22,7 +22,7 @@ namespace PositionSharing.Communication
         {
             socketLock = new object();
             client = new TcpClient();
-            _ = Connect();
+            _ = Task.Run(Connect);
         }
 
         /// <summary>
@@ -38,7 +38,7 @@ namespace PositionSharing.Communication
                     try
                     {
 
-                    client.Connect("172.16.21.10", 5002);
+                    client.Connect("192.168.87.118", 5002);
                     socket = client.Client;
                     }catch { }
                 } while (!client.Connected);

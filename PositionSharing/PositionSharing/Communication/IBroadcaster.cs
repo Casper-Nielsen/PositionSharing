@@ -12,5 +12,6 @@ namespace PositionSharing.Communication
         void RemoveListener(ref IGroupListener listener);
         Task GetGroupsAsync();
         void StopGettingGroups();
+        void StopReplying();
     }
 }

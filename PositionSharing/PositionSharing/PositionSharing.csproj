@@ -18,6 +18,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\CommunicationModels\CommunicationModels.csproj" />
+    <ProjectReference Include="..\..\Encryption\Encryption.csproj" />
   </ItemGroup>
 
   <ItemGroup>

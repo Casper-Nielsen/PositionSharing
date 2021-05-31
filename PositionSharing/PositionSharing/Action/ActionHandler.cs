@@ -1,4 +1,5 @@
 ﻿using PositionSharing.Communication;
+using PositionSharing.Listener;
 using PositionSharing.Model;
 using PositionSharing.Storage;
 using System;
@@ -8,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace PositionSharing.Action
 {
-    public class ActionHandler
+    public class ActionHandler : IGroupListener
     {
         private ICommunicationManager communicationManager;
         private IStorageManager storageManager;
@@ -20,7 +21,7 @@ namespace PositionSharing.Action
             get { return username; }
             set { username = value; }
         }
-
+        
         public ActionHandler(ICommunicationManager communicationManager, IStorageManager storageManager, IBroadcaster broadcaster)
         {
             this.communicationManager = communicationManager;
@@ -71,6 +72,14 @@ namespace PositionSharing.Action
         public void StartGettingJoinableGroups()
         {
             broadcaster.GetGroupsAsync();
+        }
+
+        /// <summary>
+        /// gets all groups where a member is on the local network
+        /// </summary>
+        public void AddGroupToList(Group group)
+        {
+            throw new NotImplementedException();
         }
     }
 }

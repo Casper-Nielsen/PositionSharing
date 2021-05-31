@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Encryption.Interface
 {
-    interface ISyncEncryption
+    public interface ISyncEncryption
     {
     }
 }

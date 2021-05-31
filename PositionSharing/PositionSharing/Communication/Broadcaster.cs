@@ -1,4 +1,9 @@
-﻿using PositionSharing.Listener;
+﻿using CommunicationModels.Models;
+using CommunicationModels.Factory;
+using Encryption.Factory;
+using Encryption.Interface;
+using Google.Protobuf;
+using PositionSharing.Listener;
 using System;
 using System.Collections.Generic;
 using System.Net;
@@ -11,7 +16,9 @@ namespace PositionSharing.Communication
     public class Broadcaster : IBroadcaster
     {
         private bool gettingGroups;
+        private bool sendReplys;
         private List<IGroupListener> groupListeners;
+        private Action.ActionHandler handler;
 
         public Broadcaster()
         {
@@ -29,26 +36,41 @@ namespace PositionSharing.Communication
         public async Task GetGroupsAsync()
         {
             gettingGroups = true;
-            SendBroadcast();
-            await Task.Delay(1);
+            await SendBroadcastAsync();
         }
 
         public void StopGettingGroups()
         {
             gettingGroups = false;
         }
-        public void StartReplying()
+        public void StartReplying(ref Action.ActionHandler handler)
         {
+            this.handler = handler;
+            sendReplys = true;
+            Task.Run(new System.Action(ReceiveBroadcast));
         }
-
-        private void SendBroadcast()
+        public void StopReplying()
         {
-            byte[] buffer = new byte[1024];
+            sendReplys = false;
+        }
+        private async Task SendBroadcastAsync()
+        {
+            Task<IAsyncEncryption> rsaTask = Task<IAsyncEncryption>.Run(() =>
+            {
+                return RSAFactory.Create(2048);
+            });
+            byte[] buffer = new byte[1024 * 8];
             var socket = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);
             socket.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.Broadcast, 1);
 
             socket.Connect(new IPEndPoint(IPAddress.Broadcast, 16789));
-            socket.Send(Encoding.UTF8.GetBytes("Anyone out there?"));
+            await rsaTask;
+            IAsyncEncryption rsa = rsaTask.Result;
+            IMessage message = KeyFactory.Create(Key.Types.KeyType.Rsa, rsa.GetPublicKey());
+            socket.Send(
+                MessageFactory.Create(OuterMessage.Types.MessageType.Request,
+                OuterMessage.Types.RequestType.Getgroups,
+                message).ToByteArray());
 
             var ep = socket.LocalEndPoint;
 
@@ -58,28 +80,62 @@ namespace PositionSharing.Communication
 
             socket.Bind(ep);
             socket.Receive(buffer);
-            var data = Encoding.UTF8.GetString(buffer);
-            Console.WriteLine("Got reply: " + data);
+
+            for (int i = 0; i < groupListeners.Count; i++)
+            {
+                groupListeners[i];
+            }
 
             socket.Close();
         }
 
+        /// <summary>
+        /// Receives broad casts and sends its groups back
+        /// </summary>
+        /// <param name="handler">the action handler</param>
         private void ReceiveBroadcast()
         {
-            byte[] buffer = new byte[1024];
+            
+            // Setup for Receiving broadcast message on port 16789
+            byte[] buffer = new byte[1024 * 8];
 
             var socket = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);
             var iep = new IPEndPoint(IPAddress.Any, 16789);
             socket.Bind(iep);
 
             var ep = iep as EndPoint;
-            socket.ReceiveFrom(buffer, ref ep);
-            var data = Encoding.UTF8.GetString(buffer);
 
-            Console.WriteLine("Received broadcast: " + data + " from: " + ep.ToString());
+            // Gets message from broadcast
+            int lenght = socket.ReceiveFrom(buffer, ref ep);
+            Array.Resize(ref buffer, lenght);
+            if (lenght > 1)
+            {
+                // Gets the RSA encryption
+                OuterMessage outerMessage = MessageFactory.Create(buffer);
+                if (outerMessage.RType == OuterMessage.Types.RequestType.Getgroups)
+                {
+                    Key key = KeyFactory.Create(outerMessage.Message.ToByteArray());
+                    if (key.Type == Key.Types.KeyType.Rsa)
+                    {
+                        IAsyncEncryption asyncEncryption = RSAFactory.Create(key.Key_.ToByteArray());
 
-            buffer = Encoding.UTF8.GetBytes("Yeah me!");
-            socket.SendTo(buffer, ep);
+                        // Gets all the groups that the phone knows
+                        List<Model.Group> groups = handler.GetLocalGroups();
+                        foreach (Model.Group group in groups)
+                        {
+                            // Converts groups to Communications models group
+                            IMessage message = GroupFactory.Create(group.Title, group.GroupKey);
+
+                            // Encrypts group
+                            buffer = asyncEncryption.Encrypt(message.ToByteArray());
+
+                            // Sends the encrypted group
+                            socket.SendTo(buffer, ep);
+
+                        }
+                    }
+                }
+            }
 
             socket.Close();
         }

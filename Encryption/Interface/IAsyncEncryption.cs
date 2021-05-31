@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Encryption.Interface
 {
-    interface IAsyncEncryption
+    public interface IAsyncEncryption
     {
         byte[] GetPublicKey();
         void AddPublicKey(byte[] key);

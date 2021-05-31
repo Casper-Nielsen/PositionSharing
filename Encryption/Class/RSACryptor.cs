@@ -8,7 +8,6 @@ namespace Encryption.Class
 {
     class RSACryptor : IAsyncEncryption
     {
-        string ContainerName;
         readonly RSACryptoServiceProvider rsa;
 
         public RSACryptor()

@@ -6,7 +6,7 @@ using System.Text;
 
 namespace Encryption.Factory
 {
-    class RSAFactory
+    public class RSAFactory
     {
         public static IAsyncEncryption Create()
         {

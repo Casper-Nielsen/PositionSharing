@@ -25,15 +25,15 @@ namespace CommunicationModels.Models {
       byte[] descriptorData = global::System.Convert.FromBase64String(
           string.Concat(
             "ChJPdXRlck1lc3NhZ2UucHJvdG8SGkNvbW11bmljYXRpb25Nb2RlbHMuTW9k",
-            "ZWxzGh9nb29nbGUvcHJvdG9idWYvdGltZXN0YW1wLnByb3RvIs4CCgxPdXRl",
+            "ZWxzGh9nb29nbGUvcHJvdG9idWYvdGltZXN0YW1wLnByb3RvIt0CCgxPdXRl",
             "ck1lc3NhZ2USQwoFbVR5cGUYASABKA4yNC5Db21tdW5pY2F0aW9uTW9kZWxz",
             "Lk1vZGVscy5PdXRlck1lc3NhZ2UuTWVzc2FnZVR5cGUSQwoFclR5cGUYAiAB",
             "KA4yNC5Db21tdW5pY2F0aW9uTW9kZWxzLk1vZGVscy5PdXRlck1lc3NhZ2Uu",
             "UmVxdWVzdFR5cGUSKQoFc3RhbXAYAyABKAsyGi5nb29nbGUucHJvdG9idWYu",
             "VGltZXN0YW1wEg8KB21lc3NhZ2UYBCABKAwiPgoLTWVzc2FnZVR5cGUSCQoF",
             "RVJST1IQABIMCghSRVNQT05TRRABEgsKB1JFUVVFU1QQAhIJCgVQVUxTRRAD",
-            "IjgKC1JlcXVlc3RUeXBlEggKBE5PTkUQABIPCgtDUkVBVEVHUk9VUBABEg4K",
-            "CkxFQVZFR1JPVVAQAmIGcHJvdG8z"));
+            "IkcKC1JlcXVlc3RUeXBlEggKBE5PTkUQABIPCgtDUkVBVEVHUk9VUBABEg4K",
+            "CkxFQVZFR1JPVVAQAhINCglHRVRHUk9VUFMQA2IGcHJvdG8z"));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { global::Google.Protobuf.WellKnownTypes.TimestampReflection.Descriptor, },
           new pbr::GeneratedClrTypeInfo(null, null, new pbr::GeneratedClrTypeInfo[] {
@@ -346,6 +346,7 @@ namespace CommunicationModels.Models {
         [pbr::OriginalName("NONE")] None = 0,
         [pbr::OriginalName("CREATEGROUP")] Creategroup = 1,
         [pbr::OriginalName("LEAVEGROUP")] Leavegroup = 2,
+        [pbr::OriginalName("GETGROUPS")] Getgroups = 3,
       }
 
     }

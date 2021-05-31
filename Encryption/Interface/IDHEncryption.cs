@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Encryption.Interface
 {
-    interface IDHEncryption
+    public interface IDHEncryption
     {
     }
 }
